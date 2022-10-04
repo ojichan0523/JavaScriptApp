@@ -1,34 +1,83 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React, { useState } from "react";
+import "../css/style.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App = () => {
+  const [todoText, setTodoText] = useState("");
+  const [incomplateTodos, setIncomplateTodos] = useState([]);
+  const [complateTodos, setComplateTodos] = useState(["うううう"]);
+
+  const onChangeTodoText = (event) => setTodoText(event.target.value);
+
+  const onClickAdd = () => {
+    if (todoText === "") return;
+    const newTodo = [...incomplateTodos, todoText];
+    setIncomplateTodos(newTodo);
+    setTodoText("");
+  };
+
+  const onClickDelete = (index) => {
+    const newTodos = [...incomplateTodos];
+    newTodos.splice(index, 1);
+    setIncomplateTodos(newTodos);
+  };
+
+  const onClickComplate = (index) => {
+    const newIncomplateTodos = [...incomplateTodos];
+    newIncomplateTodos.splice(index, 1);
+
+    const newConplateTodos = [...complateTodos, incomplateTodos[index]];
+    setIncomplateTodos(newIncomplateTodos);
+    setComplateTodos(newConplateTodos);
+  };
+
+  const onClickBack = (index) => {
+    const newConplateTodos = [...complateTodos];
+    newConplateTodos.splice(index, 1);
+
+    const newIncomplateTodos = [incomplateTodos, complateTodos(index)];
+    setComplateTodos(newConplateTodos);
+    setIncomplateTodos(newIncomplateTodos);
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <>
+      <div className="input-area">
+        <input
+          placeholder="TODOを入力"
+          value={todoText}
+          onChange={onChangeTodoText}
+        />
+        <button onClick={onClickAdd}>追加</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
 
-export default App
+      <div className="imcomplate-area">
+        <p className="title">未完了のTODO</p>
+        <ul>
+          {incomplateTodos.map((todo, index) => {
+            return (
+              <div key={todo} className="list-row">
+                <li>{todo}</li>
+                <button onClick={() => onClickComplate(index)}>完了</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
+              </div>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="complate-area">
+        <p className="title">完了したTODO</p>
+        <ul>
+          {complateTodos.map((todo, index) => {
+            return (
+              <div key="todo" className="list-row">
+                <li>うううう</li>
+                <button onClick={() => onClickBack(index)}>戻す</button>
+              </div>
+            );
+          })}
+        </ul>
+      </div>
+    </>
+  );
+};
