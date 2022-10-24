@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react'
 
 const ColorfulMessage = (props) => {
-  console.log("カラフル");
-  const { color, children } = props;
+  console.log('カラフル')
+  const { color, children } = props
   const constentStyle = {
-    color: color,
-    fontSize: "18px",
-  };
+    color,
+    fontSize: '18px'
+  }
 
-  return <p style={constentStyle}>{children}</p>;
-};
+  return <p style={constentStyle}>{children}</p>
+}
 
-export default ColorfulMessage;
+export default ColorfulMessage
